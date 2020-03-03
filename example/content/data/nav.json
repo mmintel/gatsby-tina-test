@@ -1,0 +1,19 @@
+{
+  "items": [
+    {
+      "label": "Home",
+      "link": "/"
+    },
+    {
+      "label": "Blog",
+      "link": "/blog"
+    },
+    {
+      "label": "Contact",
+      "link": "/contact"
+    }
+  ],
+  "__gatsby_resolved": {
+    "fileRelativePath": "/content/data/nav.json"
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { graphql } from "gatsby"
+import Site from '../components/site';
 import Layout from '../components/layout';
 import {
   useLocalRemarkForm,
@@ -36,9 +37,11 @@ const Document = ({ data }) => {
   )
 
   return (
-    <Layout>
-      {markdownRemark.frontmatter.title}
-    </Layout>
+    <Site>
+      <Layout>
+        {markdownRemark.frontmatter.title}
+      </Layout>
+    </Site>
   )
 };
 

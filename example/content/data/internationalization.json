@@ -1,0 +1,15 @@
+{
+  "languages": [
+    {
+      "code": "en",
+      "label": "English"
+    },
+    {
+      "code": "de",
+      "label": "German"
+    }
+  ],
+  "__gatsby_resolved": {
+    "fileRelativePath": "/content/data/internationalization.json"
+  }
+}

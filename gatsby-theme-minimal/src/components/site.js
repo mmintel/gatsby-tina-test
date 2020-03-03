@@ -1,20 +1,28 @@
 import React from 'react';
 import { withPlugin } from "tinacms"
-import { DragDropContext } from 'react-beautiful-dnd';
 import { RemarkCreatorPlugin } from "gatsby-tinacms-remark"
 import { useStaticQuery, graphql } from "gatsby"
 import slugify from "slugify"
 import { useLocalJsonForm, useGlobalJsonForm } from "gatsby-tinacms-json"
 
-const Layout = ({children}) => {
+const Site = ({ children }) => {
   const data = useStaticQuery(graphql`
-    query LayoutQuery {
-      nav: dataJson(
-        fileRelativePath: { eq: "/content/data/nav.json" }
+    query SiteQuery {
+      site: dataJson(
+        fileRelativePath: { eq: "/content/data/site.json" }
       ) {
-        items {
-          label,
-          link
+        title
+        description
+
+        rawJson
+        fileRelativePath
+      }
+      internationalization: dataJson(
+        fileRelativePath: { eq: "/content/data/internationalization.json" }
+      ) {
+        languages {
+          code
+          label
         }
 
         rawJson
@@ -23,14 +31,14 @@ const Layout = ({children}) => {
     }
   `)
 
-  const [nav] = useLocalJsonForm(data.nav, NavForm)
-
-  console.log(nav);
+  const [site] = useGlobalJsonForm(data.site, SiteForm)
+  const [internationalization] = useGlobalJsonForm(data.languages, InternationalizationForm)
+  console.log(internationalization);
 
   return (
-    <DragDropContext>
-      {children}
-    </DragDropContext>
+    <>
+      {typeof children === 'function' ? children({ site, internationalization }) : children}
+    </>
   )
 }
 
@@ -89,39 +97,6 @@ const InternationalizationForm = {
   ],
 }
 
-const NavForm = {
-  label: "Menu",
-  fields: [
-    {
-      label: "Main Menu",
-      name: "rawJson.menuItems",
-      component: "group-list",
-      itemProps: item => ({
-        label: item.label,
-      }),
-      fields: [
-        {
-          label: "Label",
-          name: "label",
-          component: "text",
-          parse(value) {
-            return value || ""
-          },
-        },
-        {
-          label: "Link",
-          name: "link",
-          component: "text",
-          parse(value) {
-            return value || ""
-          },
-        },
-      ],
-    },
-  ],
-}
-
-
 const CreateDocumentPlugin = new RemarkCreatorPlugin({
   /**
    * Clicking the `+` button reveals a lost of content
@@ -169,4 +144,4 @@ const CreateDocumentPlugin = new RemarkCreatorPlugin({
   },
 })
 
-export default withPlugin(Layout, CreateDocumentPlugin)
+export default withPlugin(Site, CreateDocumentPlugin)

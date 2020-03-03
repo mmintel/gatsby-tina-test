@@ -1,5 +1,7 @@
 module.exports = {
   plugins: [
-    { resolve: `gatsby-theme-minimal`, options: {} }
+    { resolve: `gatsby-theme-minimal`, options: {
+      defaultLanguage: 'en'
+    } }
   ],
 }

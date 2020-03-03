@@ -18,7 +18,7 @@ exports.setFieldsOnGraphQLNodeType = ({ type }) => {
   return {}
 }
 
-exports.createPages = async ({ graphql, actions, reporter }) => {
+exports.createPages = async ({ graphql, actions, reporter }, options) => {
   const { createPage } = actions
 
   const documentTemplate = path.resolve(__dirname, `./src/templates/document.js`)
@@ -32,6 +32,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 published
                 frontmatter {
                   slug
+                  language
                 }
               }
             }
@@ -50,16 +51,27 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   documents.forEach((document, index) => {
     const node = document.node;
-    const slug = node.childMarkdownRemark.frontmatter.slug;
-    const published = node.childMarkdownRemark.published;
+    const { published, frontmatter } = node.childMarkdownRemark;
+    const { slug, language } = frontmatter;
+    const isDefaultLanguage = options.defaultLanguage === language;
+    let path = slug;
+
+    if (!isDefaultLanguage) {
+      path = `${language}/${slug}`
+    }
+
+    if (path !== '/') {
+      path = path.replace(/([^:]\/)\/+/g, '$1'); // remove double slashes
+    }
 
     if (!published) return
 
     const page = {
-      path: slug,
+      path,
       component: documentTemplate,
       context: {
         slug,
+        language,
       },
     }
 
