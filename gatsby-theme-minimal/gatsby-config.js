@@ -1,23 +1,25 @@
+const path = require('path');
+
 module.exports = {
   plugins: [
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `./content/documents`,
+        path: `content/documents`,
         name: `documents`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `./content/assets`,
+        path: `content/assets`,
         name: `assets`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `./content/data`,
+        path: `content/data`,
         name: `data`,
       },
     },

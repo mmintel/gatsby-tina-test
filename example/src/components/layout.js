@@ -1,6 +1,6 @@
 import React from 'react';
 import { withPlugin } from "tinacms"
-import { createRemarkButton } from "gatsby-tinacms-remark"
+import { RemarkCreatorPlugin } from "gatsby-tinacms-remark"
 import slugify from "slugify"
 
 const Layout = ({children}) => {
@@ -9,7 +9,7 @@ const Layout = ({children}) => {
   )
 }
 
-const CreateDocumentPlugin = createRemarkButton({
+const CreateDocumentPlugin = new RemarkCreatorPlugin({
   /**
    * Clicking the `+` button reveals a lost of content
    * types that can be created. This field sets the
