@@ -8,6 +8,7 @@
     "gatsby": "^2.6.0"
   },
   "dependencies": {
+    "gatsby-plugin-offline": "^3.0.35",
     "gatsby-plugin-sharp": "^2.4.5",
     "gatsby-plugin-tinacms": "^0.1.25",
     "gatsby-remark-copy-linked-files": "^2.1.37",

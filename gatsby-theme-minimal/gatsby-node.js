@@ -1,24 +1,38 @@
 const path = require(`path`)
-const { createFilePath } = require(`gatsby-source-filesystem`)
+const { GraphQLBoolean } = require("gatsby/graphql")
 
-exports.createPages = async ({ graphql, actions }) => {
+exports.setFieldsOnGraphQLNodeType = ({ type }) => {
+  if ("MarkdownRemark" === type.name) {
+    return {
+      published: {
+        type: GraphQLBoolean,
+        resolve: ({ frontmatter }) => {
+          if (process.env.NODE_ENV !== "production") {
+            return true
+          }
+          return !frontmatter.draft
+        },
+      },
+    }
+  }
+  return {}
+}
+
+exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
-  const documentTemplate = path.resolve(`./src/templates/document.js`)
+  const documentTemplate = path.resolve(__dirname, `./src/templates/document.js`)
   const result = await graphql(
     `
-      {
-        allMarkdownRemark(
-          sort: { fields: [frontmatter___date], order: DESC }
-          limit: 1000
-        ) {
+      query DocumentQuery {
+        allFile(filter: {sourceInstanceName: {eq: "documents"}}) {
           edges {
             node {
-              fields {
-                slug
-              }
-              frontmatter {
-                title
+              childMarkdownRemark {
+                published
+                frontmatter {
+                  slug
+                }
               }
             }
           }
@@ -28,36 +42,27 @@ exports.createPages = async ({ graphql, actions }) => {
   )
 
   if (result.errors) {
+    reporter.panicOnBuild(`Error while running GraphQL query.`)
     throw result.errors
   }
 
-  const documents = result.data.allMarkdownRemark.edges
+  const documents = result.data.allFile.edges
 
   documents.forEach((document, index) => {
-    const previous = index === documents.length - 1 ? null : documents[index + 1].node
-    const next = index === 0 ? null : documents[index - 1].node
+    const node = document.node;
+    const slug = node.childMarkdownRemark.frontmatter.slug;
+    const published = node.childMarkdownRemark.published;
 
-    createPage({
-      path: document.node.fields.slug,
+    if (!published) return
+
+    const page = {
+      path: slug,
       component: documentTemplate,
       context: {
-        slug: document.node.fields.slug,
-        previous,
-        next,
+        slug,
       },
-    })
+    }
+
+    createPage(page)
   })
-}
-
-exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
-
-  if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
-    createNodeField({
-      name: `slug`,
-      node,
-      value,
-    })
-  }
 }

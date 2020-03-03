@@ -1,4 +1,9 @@
 {
   "pk": "page",
-  "title": "Baretheme"
+  "title": "Baretheme",
+  "description": "My new website",
+  "__gatsby_resolved": {
+    "fileRelativePath": "/content/data/page.json",
+    "pk": "page"
+  }
 }

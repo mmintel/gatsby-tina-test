@@ -2,6 +2,11 @@ const path = require('path');
 
 module.exports = {
   plugins: [
+    `gatsby-transformer-json`,
+    `gatsby-transformer-sharp`,
+    "gatsby-tinacms-json",
+    `gatsby-plugin-sharp`,
+    'gatsby-plugin-offline',
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -23,16 +28,17 @@ module.exports = {
         name: `data`,
       },
     },
-    'gatsby-tinacms-json',
-    `gatsby-transformer-json`,
     {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
+          `gatsby-remark-prismjs`,
+          `gatsby-remark-smartypants`,
           {
             resolve: `gatsby-remark-images`,
             options: {
-              maxWidth: 590,
+              maxWidth: 880,
+              withWebp: true,
             },
           },
           {
@@ -41,20 +47,30 @@ module.exports = {
               wrapperStyle: `margin-bottom: 1.0725rem`,
             },
           },
-          `gatsby-remark-prismjs`,
-          `gatsby-remark-copy-linked-files`,
-          `gatsby-remark-smartypants`,
+          {
+            resolve: "gatsby-remark-copy-linked-files",
+            options: {
+              destinationDir: "static",
+            },
+          },
         ],
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
     {
       resolve: 'gatsby-plugin-tinacms',
       options: {
         sidebar: {
           hidden: process.env.NODE_ENV === "production",
           position: "displace",
+          // theme: {
+          //   color: {
+          //     primary: {
+          //       light: theme.color.primary,
+          //       medium: theme.color.primary,
+          //       dark: theme.color.primary,
+          //     },
+          //   },
+          // },
         },
         plugins: [
           "gatsby-tinacms-git",
