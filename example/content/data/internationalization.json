@@ -1,10 +1,6 @@
 {
   "languages": [
     {
-      "code": "jp",
-      "label": "Japanese"
-    },
-    {
       "code": "en",
       "label": "English"
     },
