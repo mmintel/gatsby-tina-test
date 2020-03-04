@@ -38,6 +38,17 @@ exports.createPages = async ({ graphql, actions, reporter }, options) => {
             }
           }
         }
+        internationalization: dataJson(
+          fileRelativePath: { eq: "/content/data/internationalization.json" }
+        ) {
+          languages {
+            code
+            label
+          }
+
+          rawJson
+          fileRelativePath
+        }
       }
     `
   )
@@ -48,12 +59,13 @@ exports.createPages = async ({ graphql, actions, reporter }, options) => {
   }
 
   const documents = result.data.allFile.edges
+  const languages = result.data.internationalization.languages;
 
   documents.forEach((document, index) => {
     const node = document.node;
     const { published, frontmatter } = node.childMarkdownRemark;
     const { slug, language } = frontmatter;
-    const isDefaultLanguage = options.defaultLanguage === language;
+    const isDefaultLanguage = languages[0].code === language;
     let path = slug;
 
     if (!isDefaultLanguage) {

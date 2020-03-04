@@ -1,19 +1,18 @@
 import React from 'react';
 import { withPlugin } from "tinacms"
-import { DragDropContext } from 'react-beautiful-dnd';
 import { RemarkCreatorPlugin } from "gatsby-tinacms-remark"
 import { useStaticQuery, graphql } from "gatsby"
 import slugify from "slugify"
-import { useLocalJsonForm, useGlobalJsonForm } from "gatsby-tinacms-json"
+import { useGlobalJsonForm } from "gatsby-tinacms-json"
 
 const Layout = ({children}) => {
   const data = useStaticQuery(graphql`
     query LayoutQuery {
-      nav: dataJson(
-        fileRelativePath: { eq: "/content/data/nav.json" }
+      navigation: dataJson(
+        fileRelativePath: { eq: "/content/data/navigation.json" }
       ) {
-        items {
-          label,
+        main {
+          label
           link
         }
 
@@ -23,78 +22,21 @@ const Layout = ({children}) => {
     }
   `)
 
-  const [nav] = useLocalJsonForm(data.nav, NavForm)
-
-  console.log(nav);
+  const [navigation] = useGlobalJsonForm(data.navigation, NavigationForm)
 
   return (
-    <DragDropContext>
+    <div>
       {children}
-    </DragDropContext>
+    </div>
   )
 }
 
-const SiteForm = {
-  label: "Site",
-  fields: [
-    {
-      label: "Title",
-      name: "rawJson.title",
-      component: "text",
-      parse(value) {
-        return value || ""
-      },
-    },
-    {
-      label: "Description",
-      name: "rawJson.description",
-      component: "text",
-      parse(value) {
-        return value || ""
-      },
-    },
-  ],
-}
-
-const InternationalizationForm = {
-  label: "Internationalization",
-  fields: [
-    {
-      label: "Languages",
-      name: "rawJson.languages",
-      component: "group-list",
-      itemProps: item => ({
-        key: item.code,
-        label: item.label,
-      }),
-      fields: [
-        {
-          label: "Code",
-          name: "code",
-          component: "text",
-          parse(value) {
-            return value || ""
-          },
-        },
-        {
-          label: "Label",
-          name: "label",
-          component: "text",
-          parse(value) {
-            return value || ""
-          },
-        },
-      ],
-    },
-  ],
-}
-
-const NavForm = {
-  label: "Menu",
+const NavigationForm = {
+  label: "Navigation",
   fields: [
     {
       label: "Main Menu",
-      name: "rawJson.menuItems",
+      name: "rawJson.main",
       component: "group-list",
       itemProps: item => ({
         label: item.label,

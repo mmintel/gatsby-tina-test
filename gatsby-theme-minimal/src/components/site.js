@@ -3,7 +3,7 @@ import { withPlugin } from "tinacms"
 import { RemarkCreatorPlugin } from "gatsby-tinacms-remark"
 import { useStaticQuery, graphql } from "gatsby"
 import slugify from "slugify"
-import { useLocalJsonForm, useGlobalJsonForm } from "gatsby-tinacms-json"
+import { useGlobalJsonForm } from "gatsby-tinacms-json"
 
 const Site = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -32,8 +32,7 @@ const Site = ({ children }) => {
   `)
 
   const [site] = useGlobalJsonForm(data.site, SiteForm)
-  const [internationalization] = useGlobalJsonForm(data.languages, InternationalizationForm)
-  console.log(internationalization);
+  const [internationalization] = useGlobalJsonForm(data.internationalization, InternationalizationForm)
 
   return (
     <>

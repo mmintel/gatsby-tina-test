@@ -1,5 +1,5 @@
 {
-  "items": [
+  "main": [
     {
       "label": "Home",
       "link": "/"
@@ -14,6 +14,6 @@
     }
   ],
   "__gatsby_resolved": {
-    "fileRelativePath": "/content/data/nav.json"
+    "fileRelativePath": "/content/data/navigation.json"
   }
 }
