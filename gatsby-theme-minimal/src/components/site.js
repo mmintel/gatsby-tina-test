@@ -4,6 +4,7 @@ import { RemarkCreatorPlugin } from "gatsby-tinacms-remark"
 import { useStaticQuery, graphql } from "gatsby"
 import slugify from "slugify"
 import { useGlobalJsonForm } from "gatsby-tinacms-json"
+import { get } from 'lodash';
 
 const Site = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -13,6 +14,7 @@ const Site = ({ children }) => {
       ) {
         title
         description
+        logo
 
         rawJson
         fileRelativePath
@@ -59,6 +61,25 @@ const SiteForm = {
       parse(value) {
         return value || ""
       },
+    },
+    {
+      label: 'Logo',
+      name: 'rawJson.logo',
+      component: 'image',
+
+      previewSrc: (formValues, fieldProps) => {
+        const pathName = fieldProps.input.name.replace("rawJson", "jsonNode")
+        console.log(formValues);
+        const imageNode = get(formValues, pathName)
+        if (!imageNode || !imageNode.childImageSharp) return ""
+        return imageNode.childImageSharp.fluid.src
+      },
+
+      uploadDir: () => {
+        return '/content/assets/'
+      },
+
+      parse: filename => `/content/assets/${filename}`,
     },
   ],
 }

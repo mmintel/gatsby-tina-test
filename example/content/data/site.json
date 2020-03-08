@@ -3,5 +3,6 @@
   "description": "My new website",
   "__gatsby_resolved": {
     "fileRelativePath": "/content/data/site.json"
-  }
+  },
+  "logo": "../assets/icon.png"
 }
