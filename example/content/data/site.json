@@ -4,5 +4,5 @@
   "__gatsby_resolved": {
     "fileRelativePath": "/content/data/site.json"
   },
-  "logo": "../assets/icon.png"
+  "logo": "/content/assets/logo-light-theme.svg"
 }

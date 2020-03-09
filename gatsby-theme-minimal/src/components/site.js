@@ -69,17 +69,17 @@ const SiteForm = {
 
       previewSrc: (formValues, fieldProps) => {
         const pathName = fieldProps.input.name.replace("rawJson", "jsonNode")
-        console.log(formValues);
         const imageNode = get(formValues, pathName)
-        if (!imageNode || !imageNode.childImageSharp) return ""
-        return imageNode.childImageSharp.fluid.src
+        if (!imageNode) return ""
+        if (!imageNode.childImageSharp) return imageNode;
+        return imageNode.childImageSharp.fixed.src
       },
 
       uploadDir: () => {
         return '/content/assets/'
       },
 
-      parse: filename => `/content/assets/${filename}`,
+      parse: filename => `content/assets/${filename}`,
     },
   ],
 }
