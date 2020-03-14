@@ -14,7 +14,13 @@ const Site = ({ children }) => {
       ) {
         title
         description
-        logo
+        logo {
+          childImageSharp {
+            fixed(width:200) {
+              src
+            }
+          }
+        }
 
         rawJson
         fileRelativePath
@@ -70,6 +76,7 @@ const SiteForm = {
       previewSrc: (formValues, fieldProps) => {
         const pathName = fieldProps.input.name.replace("rawJson", "jsonNode")
         const imageNode = get(formValues, pathName)
+        console.log(imageNode);
         if (!imageNode) return ""
         if (!imageNode.childImageSharp) return imageNode;
         return imageNode.childImageSharp.fixed.src
@@ -79,7 +86,7 @@ const SiteForm = {
         return '/content/assets/'
       },
 
-      parse: filename => `content/assets/${filename}`,
+      parse: filename => `../assets/${filename}`,
     },
   ],
 }
