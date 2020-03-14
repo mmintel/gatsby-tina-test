@@ -1,6 +1,4 @@
-const path = require('path');
-
-module.exports = {
+module.exports = (options) => ({
   plugins: [
     `gatsby-transformer-json`,
     `gatsby-transformer-sharp`,
@@ -73,10 +71,13 @@ module.exports = {
           // },
         },
         plugins: [
-          "gatsby-tinacms-git",
+          {
+            resolve: "gatsby-tinacms-git",
+            options,
+          },
           "gatsby-tinacms-remark",
         ],
       },
     },
   ]
-}
+})
